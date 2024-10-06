@@ -1,0 +1,75 @@
+version: '3.8'
+
+services:
+  mariadb:
+    build:
+      context: ./requirements/mariadb
+    container_name: mariadb_container
+    image: mariadb:tag1
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_USER1: ${MYSQL_USER1}
+      MYSQL_USER2: ${MYSQL_USER2}
+      MYSQL_USER1_PASSWORD: ${MYSQL_USER1_PASSWORD}
+      MYSQL_USER2_PASSWORD: ${MYSQL_USER2_PASSWORD}
+    networks:
+      - inception_network
+    restart: on-failure
+
+  wordpress:
+    build:
+      context: ./requirements/wordpress
+    container_name: wordpress_container
+    image: wordpress:tag1
+    ports:
+      - "9000:9000"
+    volumes:
+      - wordpress_data:/var/www/html
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER2: ${MYSQL_USER2}
+      MYSQL_USER2_PASSWORD: ${MYSQL_USER2_PASSWORD}
+      WORDPRESS_ADMIN_USER: ${WORDPRESS_ADMIN_USER}
+      WORDPRESS_ADMIN_PASSWORD: ${WORDPRESS_ADMIN_PASSWORD}
+    depends_on:
+      - mariadb
+    networks:
+      - inception_network
+    restart: on-failure
+
+  nginx:
+    build:
+      context: ./requirements/nginx
+    container_name: nginx_container
+    image: nginx:tag1
+    depends_on:
+    - wordpress
+    ports:
+      - "443:443"
+    volumes:
+      - wordpress_data:/var/www/html
+    networks:
+      - inception_network
+    restart: on-failure
+
+volumes:
+  db_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/marschul/data/mariadb
+      o: bind
+
+  wordpress_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/marschul/data/wordpressfiles
+      o: bind
+
+networks:
+  inception_network:
