@@ -1,7 +1,13 @@
 # Inception
-Creating your own wordpress site with docker containers.
+Creating your own wordpress site with docker containers.  
+I created 3 containers, MariaDB, Wordpress and nginx. They all have Debian:Buster as base image and then install the programs with the help of shell scripts.  
+I also used docker-compose, a docker network and 2 docker volumes.  
 
-This was a 42Heilbronn project, the description is in the pdf file.
-There are 3 containers, nginx, MariaDB and Wordpress. They all have Debian:Buster as base image and then install the programs with the help of shell scripts.
+## Details
+This was a 42Heilbronn project, the description is in the pdf file.  
 
-Change into real_inception and make.
+## Usage
+```
+cd real_inception
+make
+```
