@@ -4,10 +4,14 @@ I created 3 containers, MariaDB, Wordpress and nginx. They all have Debian:Buste
 I also used docker-compose, a docker network and 2 docker volumes.  
 
 ## Details
-This was a 42Heilbronn project, the description is in the pdf file.  
+This was a 42Heilbronn project, the detailed description is in the pdf file.  
 
 ## Usage
 ```
 cd real_inception
 make
+```
+Then surf to
+```
+https://localhost:443
 ```
